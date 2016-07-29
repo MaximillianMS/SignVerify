@@ -1,3 +1,7 @@
+/************************************************************************
+* SuperCryptoAPI.h : NameSpace с CryptoAPI функциями                    *
+* Автор: Максим Нестеров                                                *
+/***********************************************************************/
 #pragma once
 #include <string>
 #include <vector>
@@ -11,14 +15,14 @@ namespace SuperCryptoAPI
 		std::vector<std::wstring> aStores; //массив названий хранилищ
 
 	};
-	struct ProviderInfo
+	struct ProviderInfo // Информация об криптопровайдере
 	{
 	public:
 		std::wstring       sName;
 		DWORD       dwType;
 		DWORD       dwIndex;
 	};
-	struct AlgInfo
+	struct AlgInfo // Информация об алгоритме
 	{
 	public:
 		CString sAlgName;
@@ -95,7 +99,7 @@ namespace SuperCryptoAPI
 			))
 		{
 			if (!(pszName = (LPTSTR)LocalAlloc(LMEM_ZEROINIT, cbName))) //выделили память под строку 
-			{                                                           //все ради win api.
+			{                                                           
 				exit(1);
 			}
 			if (CryptEnumProviders( //еще раз получаем информацию о текущем криптопровайдере.
@@ -120,6 +124,7 @@ namespace SuperCryptoAPI
 			LocalFree(pszName);//очистка памяти
 		}
 	}
+	 // Функция получения списка сертификатов
 	inline void getCerts(std::vector <CERT_CONTEXT> &aCerts, HCERTSTORE pMyStore)
 	{
 		PCCERT_CONTEXT pCurCert=NULL;
@@ -130,6 +135,7 @@ namespace SuperCryptoAPI
 			pCurCert=CertEnumCertificatesInStore(pMyStore, pCurCert);
 		}
 	}
+	 // Функция получения списка алгоритмов
 	inline std::vector<AlgInfo> getAlgs(HCRYPTPROV hMyProv)
 	{
 		std::vector<AlgInfo> aAlgs;
@@ -149,11 +155,11 @@ namespace SuperCryptoAPI
 					dwFlags = 0;
 				}
 				PROV_ENUMALGS_EX pAlg_ex;
-				// Retrieve information about an algorithm.
+				// Получение информации об алгоритме
 				if(!CryptGetProvParam(hMyProv, PP_ENUMALGS_EX, (BYTE*)&pAlg_ex, &dwDataLen, dwFlags)) {
 					if(GetLastError() == ERROR_NO_MORE_ITEMS) 
 					{
-						// Exit the loop.
+						// Выход
 						break;
 					} 
 					else
@@ -161,13 +167,13 @@ namespace SuperCryptoAPI
 						return aAlgs;
 					}
 				}
-				// Extract algorithm information from 'pbData' buffer.
+				// Извлечение информации из буфера 'pbData'.
 				AlgInfo alg1;
 				alg1.dwAlgId = pAlg_ex.aiAlgid;
 				alg1.dwBits = pAlg_ex.dwDefaultLen;
 				auto dwNameLen = pAlg_ex.dwNameLen;
 				alg1.sAlgName=pAlg_ex.szName;
-				// Determine algorithm type.
+				// Определить тип алгоритма
 				switch(GET_ALG_CLASS(alg1.dwAlgId)) {
 				case ALG_CLASS_DATA_ENCRYPT: alg1.sType= _T("Encrypt");
 					break;

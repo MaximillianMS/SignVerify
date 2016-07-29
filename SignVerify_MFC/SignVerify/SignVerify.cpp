@@ -1,6 +1,7 @@
-
-// SignVerify_MFC.cpp : Определяет поведение классов для приложения.
-//
+/************************************************************************
+* SignVerify.cpp : Определяет поведение классов для приложения.         *
+* Автор: Максим Нестеров                                                *
+/***********************************************************************/
 #pragma once
 #include "stdafx.h"
 #include "SignVerify.h"
@@ -11,16 +12,16 @@
 #endif
 
 
-// CSignVerify_MFCApp
+// CSignVerifyApp
 
-BEGIN_MESSAGE_MAP(CSignVerify_MFCApp, CWinApp)
+BEGIN_MESSAGE_MAP(CSignVerifyApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// создание CSignVerify_MFCApp
+// создание CSignVerifyApp
 
-CSignVerify_MFCApp::CSignVerify_MFCApp()
+CSignVerifyApp::CSignVerifyApp()
 {
 	// поддержка диспетчера перезагрузки
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
@@ -30,14 +31,14 @@ CSignVerify_MFCApp::CSignVerify_MFCApp()
 }
 
 
-// Единственный объект CSignVerify_MFCApp
+// Единственный объект CSignVerifyApp
 
-CSignVerify_MFCApp theApp;
+CSignVerifyApp theApp;
 
 
-// инициализация CSignVerify_MFCApp
+// инициализация CSignVerifyApp
 
-BOOL CSignVerify_MFCApp::InitInstance()
+BOOL CSignVerifyApp::InitInstance()
 {
 //TODO: call AfxInitRichEdit2() to initialize richedit2 library.
 	// InitCommonControlsEx() требуется для Windows XP, если манифест
@@ -68,7 +69,7 @@ BOOL CSignVerify_MFCApp::InitInstance()
 	// например на название организации
 	SetRegistryKey(_T("Aktiv soft"));
 
-	CSignVerify_MFCDlg dlg;
+	CSignVerify_Dlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

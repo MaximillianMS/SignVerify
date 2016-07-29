@@ -1,5 +1,7 @@
-// EnterKey.cpp: файл реализации
-//
+/************************************************************************
+* EnterKey.cpp : файл реализации окна ввода ключа                       *
+* Автор: Максим Нестеров                                                *
+/***********************************************************************/
 #pragma once
 #include "stdafx.h"
 //#include "SignVerify.h"
@@ -107,6 +109,7 @@ void EnterKey::OnEnChangeEditKey()
 	PublicKey.Remove(_T('\n'));
 	TryDeterCoding();
 }
+
 
 
 void EnterKey::OnBnClickedOk()

@@ -1,8 +1,7 @@
-
-// stdafx.h: включите файл для добавления стандартных системных файлов
-//или конкретных файлов проектов, часто используемых,
-// но редко изменяемых
-
+/************************************************************************
+* stdafx.h : файл для добавления стандартных системных файлов           *
+* Автор: Максим Нестеров                                                *
+/***********************************************************************/
 #pragma once
 
 #ifndef _SECURE_ATL
@@ -37,8 +36,22 @@
 
 #include <afxcontrolbars.h>     // поддержка MFC для лент и панелей управления
 
-
-
+#include <vector>
+#include "tcolortext.h"
+#include "SuperCryptoAPI.h"
+#include "SignVerify.h"
+#include "SignVerify_Dlg.h"
+#include "afxdialogex.h"
+#include "EnterKey.h"
+#include "ExtraSettings.h"
+#include <windows.h>
+#include <atlbase.h>//?
+#include <atlconv.h>//?
+#include <string>
+#include <cryptuiapi.h>
+#pragma comment(lib, "advapi32.lib")
+#pragma comment(lib, "Crypt32.lib")
+#include "WinCryptEx.h"
 
 
 
