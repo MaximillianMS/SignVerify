@@ -95,6 +95,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\Users\Максим\Desktop\SignVerify.ico" />
     <None Include="res\SignVerify.ico" />
     <None Include="res\SignVerify.rc2" />
   </ItemGroup>

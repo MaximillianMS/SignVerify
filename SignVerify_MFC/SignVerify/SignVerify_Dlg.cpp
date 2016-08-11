@@ -619,7 +619,6 @@ void CSignVerify_Dlg::VerifySignWithoutCertSearch()
 	std::vector <BYTE> aPublicKey;
 	if(PubKeyInputSelected&PubKeyEntered)
 	{
-		std::vector <BYTE> aPublicKey;
 		for(DWORD i=0;i<nPubKeyLen;i++)
 		{
 			aPublicKey.push_back(PubKey[i]);
@@ -746,7 +745,7 @@ BOOL CSignVerify_Dlg::VerifySignWithCurCert(std::vector <BYTE> &aSign, std::vect
 		}
 		if(!CryptCreateHash(hMyProv, aHashAlgs.at(HashAlg).dwAlgId, 0, 0, &hMyHash))
 		{
-			AddToLog(_T("Ошибка создания хеш-объекта.\r\n"));
+			AddToLog(_T("Ошибка создания хэш-объекта.\r\n"));
 			ProccessIsDone=TRUE;
 			return FALSE;
 		}
@@ -764,7 +763,7 @@ BOOL CSignVerify_Dlg::VerifySignWithCurCert(std::vector <BYTE> &aSign, std::vect
 					0
 					))
 				{
-					AddToLog(_T("Ошибка получения параметров хеш-алгоритма\r\n"));
+					AddToLog(_T("Ошибка получения параметров хэш-функции\r\n"));
 					ProccessIsDone;
 					return FALSE;
 				}
@@ -772,14 +771,14 @@ BOOL CSignVerify_Dlg::VerifySignWithCurCert(std::vector <BYTE> &aSign, std::vect
 				{
 					if(!CryptSetHashParam(hMyHash,HP_HASHVAL,pData,0))
 					{
-						AddToLog(_T("Ошибка внесения хеша в хеш-объект\r\n"));
+						AddToLog(_T("Ошибка внесения хэша в хэш-объект\r\n"));
 						ProccessIsDone;
 						return FALSE;
 					}
 				}
 				else
 				{
-					AddToLog(_T("Длина хеша не соответствует длине хеша в используемом алгоритме\r\n"));
+					AddToLog(_T("Длина хэша не соответствует длине хэша в используемом алгоритме\r\n"));
 					ProccessIsDone;
 					return FALSE;
 				}
@@ -788,7 +787,7 @@ BOOL CSignVerify_Dlg::VerifySignWithCurCert(std::vector <BYTE> &aSign, std::vect
 			{
 				if(!CryptHashData(hMyHash,pData,aData.size(),NULL))
 				{
-					AddToLog(_T("Ошибка наполнения хеш-объекта данными.\r\n"));
+					AddToLog(_T("Ошибка наполнения хэш-объекта данными.\r\n"));
 					ProccessIsDone=TRUE;
 					return FALSE;
 				}
@@ -805,9 +804,10 @@ BOOL CSignVerify_Dlg::VerifySignWithCurCert(std::vector <BYTE> &aSign, std::vect
 				}
 		}
 	}
+	return FALSE;
 }
 // Функция проверки подписи с импортом открытого ключа
-BOOL CSignVerify_Dlg::VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vector <BYTE> &aData, std::vector <BYTE> &aPublicKey)
+BOOL CSignVerify_Dlg::VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vector <BYTE> &aData, std::vector <BYTE> aPublicKey)
 {
 	if(hMyKey!=NULL)
 	{
@@ -863,7 +863,7 @@ BOOL CSignVerify_Dlg::VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vecto
 			}
 			if(!CryptCreateHash(hMyProv, aHashAlgs.at(HashAlg).dwAlgId, 0, 0, &hMyHash))
 			{
-				AddToLog(_T("Ошибка создания хеш-объекта.\r\n"));
+				AddToLog(_T("Ошибка создания хэш-объекта.\r\n"));
 				ProccessIsDone=TRUE;
 				return FALSE;
 			}
@@ -877,11 +877,11 @@ BOOL CSignVerify_Dlg::VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vecto
 						hMyHash,
 						HP_HASHSIZE,
 						NULL,
-						HashLen,
+						&HashLen,
 						0
 						))
 					{
-						AddToLog(_T("Ошибка получения параметров хеш-алгоритма\r\n"));
+						AddToLog(_T("Ошибка получения параметров хэш-функции\r\n"));
 						ProccessIsDone;
 						return FALSE;
 					}
@@ -889,14 +889,14 @@ BOOL CSignVerify_Dlg::VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vecto
 					{
 						if(!CryptSetHashParam(hMyHash,HP_HASHVAL,pData,0))
 						{
-							AddToLog(_T("Ошибка внесения хеша в хеш-объект\r\n"));
+							AddToLog(_T("Ошибка внесения хэша в хэш-объект\r\n"));
 							ProccessIsDone;
 							return FALSE;
 						}
 					}
 					else
 					{
-						AddToLog(_T("Длина хеша не соответствует длине хеша в используемом алгоритме\r\n"));
+						AddToLog(_T("Длина хэша не соответствует длине хэша в используемом алгоритме\r\n"));
 						ProccessIsDone;
 						return FALSE;
 					}
@@ -905,7 +905,7 @@ BOOL CSignVerify_Dlg::VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vecto
 				{
 					if(!CryptHashData(hMyHash,pData,aData.size(),NULL))
 					{
-						AddToLog(_T("Ошибка наполнения хеш-объекта данными.\r\n"));
+						AddToLog(_T("Ошибка наполнения хэш-объекта данными.\r\n"));
 						ProccessIsDone=TRUE;
 						return FALSE;
 					}
@@ -958,8 +958,8 @@ BOOL CSignVerify_Dlg::VerifyDetachedSign(std::vector <BYTE> &aSign, std::vector 
 	if(ИспользуетсяХеш.GetCheck())
 	{
 
-		AddToLog(_T("Ошибка: режим хеша не может быть использован при проверке отсоединенной подписи.\r\n"));
-		AddToLog(_T("В качестве данных требуются сами данные, а не их хеш.\r\n"));
+		AddToLog(_T("Ошибка: режим хэша не может быть использован при проверке отсоединенной подписи.\r\n"));
+		AddToLog(_T("В качестве данных требуются сами данные, а не их хэш.\r\n"));
 		ProccessIsDone=TRUE;
 		return FALSE;
 	}
@@ -1663,15 +1663,11 @@ void CSignVerify_Dlg::OnBnClickedRadio6()
 {
 	DataFormat_Radio=1;
 }
-
-
-
 // данные в формате BIT STRING (радиокнопка)
 void CSignVerify_Dlg::OnBnClickedRadio7()
 {
 	DataFormat_Radio=2;
 }
-
 // данные в формате ASCII (радиокнопка)
 void CSignVerify_Dlg::OnBnClickedRadio8()
 {

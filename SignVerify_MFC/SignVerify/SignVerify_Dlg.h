@@ -241,7 +241,7 @@ protected:
 // Функция проверки отсоединенной подписи
 	BOOL VerifyDetachedSign(std::vector <BYTE> &aSign, std::vector <BYTE> &aData);
 // Функция проверки подписи с импортом открытого ключа
-	BOOL VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vector <BYTE> &aData, std::vector <BYTE> &aPublicKey);
+	BOOL VerifySignWithPubKey(std::vector <BYTE> &aSign, std::vector <BYTE> &aData, std::vector <BYTE> aPublicKey);
 // Функция вывода результата проверки подписи
 	void CheckResultVerifySign(std::vector <BYTE> &aSign, std::vector <BYTE> &aData, std::vector <BYTE> &aPublicKey);
 // Функция проверки подписи с поиском сертификата в хранилище
